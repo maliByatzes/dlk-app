@@ -1,7 +1,7 @@
 #include <assert.h>
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
 
 const char *program_name;
 
@@ -20,9 +20,8 @@ int main(int argc, char *argv[]) {
     print_usage(stderr, 1);
   }
 
-  const char* short_options = "hn"; 
-  const struct option long_options[] = 
-  {
+  const char *short_options = "hn";
+  const struct option long_options[] = {
       {"help", 0, NULL, 'h'},
       {"newline", 0, NULL, 'n'},
       {NULL, 0, NULL, 0},
@@ -33,7 +32,7 @@ int main(int argc, char *argv[]) {
   do {
     next_option = getopt_long(argc, argv, short_options, long_options, NULL);
 
-    switch(next_option) {
+    switch (next_option) {
     case 'h':
       print_usage(stdout, 0);
     case 'n':
@@ -46,11 +45,16 @@ int main(int argc, char *argv[]) {
     default:
       abort();
     }
-  } while(next_option != -1);
+  } while (next_option != -1);
 
-  for (int i = 1; i <= (argc - 1); ++i)
-    printf("%s ", argv[i]);
-  printf("\n");
+  if (newline_toggle) {
+    for (int i = 2; i <= (argc - 1); ++i)
+      printf("%s ", argv[i]);
+  } else {
+    for (int i = 1; i <= (argc - 1); ++i)
+      printf("%s ", argv[i]);
+    printf("\n");
+  }
 
   return EXIT_SUCCESS;
 }
