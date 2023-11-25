@@ -1,10 +1,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <getopt.h>
 
-const char* program_name;
+const char *program_name;
 
-void print_usage(FILE* stream, int exit_code) {
+void print_usage(FILE *stream, int exit_code) {
   fprintf(stream, "Usage: %s options [STRING]\n", program_name);
   fprintf(stream, " -h --help     Display this usage information.\n"
                   " -n --newline  Toggle newline output.\n");
@@ -19,12 +20,33 @@ int main(int argc, char *argv[]) {
     print_usage(stderr, 1);
   }
 
-  /*
-  const struct option long_options[] = {
-    { "help", 0, NULL, 'h' },
-    { "newline", 0,NULL, 'n' },
-    { NULL, 0, NULL,0},
-  }; */
+  const char* short_options = "hn"; 
+  const struct option long_options[] = 
+  {
+      {"help", 0, NULL, 'h'},
+      {"newline", 0, NULL, 'n'},
+      {NULL, 0, NULL, 0},
+  };
+  int next_option;
+  int newline_toggle = 0;
+
+  do {
+    next_option = getopt_long(argc, argv, short_options, long_options, NULL);
+
+    switch(next_option) {
+    case 'h':
+      print_usage(stdout, 0);
+    case 'n':
+      newline_toggle = 1;
+      break;
+    case '?':
+      print_usage(stderr, 1);
+    case -1:
+      break;
+    default:
+      abort();
+    }
+  } while(next_option != -1);
 
   for (int i = 1; i <= (argc - 1); ++i)
     printf("%s ", argv[i]);
