@@ -48,11 +48,21 @@ int main(int argc, char *argv[]) {
   } while (next_option != -1);
 
   if (newline_toggle) {
-    for (int i = 2; i <= (argc - 1); ++i)
-      printf("%s ", argv[i]);
+    for (int i = 2; i <= (argc - 1); ++i) {
+        if (i == (argc-1)) {
+            printf("%s", argv[i]);
+        } else {
+            printf("%s ", argv[i]);
+        }
+    }
   } else {
-    for (int i = 1; i <= (argc - 1); ++i)
-      printf("%s ", argv[i]);
+    for (int i = 1; i <= (argc - 1); ++i) {
+        if (i == (argc-1)) {
+            printf("%s", argv[i]);
+        } else {
+            printf("%s ", argv[i]);
+        }
+    }
     printf("\n");
   }
 
