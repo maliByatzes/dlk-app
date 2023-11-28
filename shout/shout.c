@@ -8,8 +8,7 @@ const char *program_name;
 void print_usage(FILE *stream, int exit_code) {
   fprintf(stream, "Usage: %s options [STRING]\n", program_name);
   fprintf(stream, " -h --help     Display this usage information.\n"
-                  " -n --newline  Toggle newline output.\n"
-                  " -e --escaped  Enable/Disable backlash-escaped characters.\n");
+                  " -n --newline  Toggle newline output.\n");
   exit(exit_code);
 }
 
@@ -25,12 +24,10 @@ int main(int argc, char *argv[]) {
   const struct option long_options[] = {
       {"help", 0, NULL, 'h'},
       {"newline", 0, NULL, 'n'},
-      {"escaped", 0, NULL, 'e'},
       {NULL, 0, NULL, 0},
   };
   int next_option;
   int newline_toggle = 0;
-  int escaped_toggle = 0;
 
   do {
     next_option = getopt_long(argc, argv, short_options, long_options, NULL);
@@ -41,9 +38,6 @@ int main(int argc, char *argv[]) {
     case 'n':
       newline_toggle = 1;
       break;
-    case 'e':
-      escaped_toggle = 1;
-      break;
     case '?':
       print_usage(stderr, 1);
     case -1:
@@ -52,8 +46,6 @@ int main(int argc, char *argv[]) {
       abort();
     }
   } while (next_option != -1);
-
-  // TODO: Read in the char* to a single char* for string manipulation.
 
   if (newline_toggle) {
     for (int i = 2; i <= (argc - 1); ++i) {
